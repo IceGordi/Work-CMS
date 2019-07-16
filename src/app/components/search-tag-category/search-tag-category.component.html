@@ -1,0 +1,66 @@
+<!-- <div style="width: 300px; margin-bottom: 20px;">
+    <h3>Select Ambito:</h3>
+    <ng-select [multiple]="true" [items]="ambitos" [disabled]="disabled" (data)="refreshValue($event)" (selected)="selected($event)" (removed)="removed($event)" placeholder="No ambito selected"></ng-select>
+    <pre>{{itemsToString(value)}}</pre>
+    <div>
+        <button type="button" class="btn btn-primary" [(ngModel)]="disabledV" btnCheckbox btnCheckboxTrue="1" btnCheckboxFalse="0">
+            {{disabled === '1' ? 'Enable' : 'Disable'}}
+          </button>
+    </div>
+</div>
+ -->
+
+
+<h3>13. FormControl</h3>
+<form #ambForm="ngForm">
+    <select2 [data]="select2Data" multiple="true" name="ambitos" ngModel (ngSubmit)="onSubmit(ambForm)"></select2>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<h4>Search:</h4>
+<input [(ngModel)]="termino" (keyup.enter)="searchTags(termino)">
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Id</th>
+            <th scope="col">Content</th>
+            <th scope="col">Utility 1</th>
+            <th scope="col">Utility 2</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let tag of tags; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{ tag["id"] }}</td>
+            <td>{{ tag["content"] }}</td>
+            <td></td>
+            <td></td>
+            <!-- Rellenar luego anadiendo contenido-->
+        </tr>
+    </tbody>
+</table>
+
+<!-- <div class="list-group">
+
+    <a href="#" class="list-group-item list-group-item-action" *ngFor="let tag of tags; let i = index">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Tag: {{i}}</h5>
+            <small>{{tag.edited}}</small>
+        </div>
+        <p class="mb-1">id: {{ tag.id }}</p>
+        <p class="mb-1">category: {{ tag.category }}</p>
+        <p class="mb-1">estado: {{ tag.estado }}</p>
+        <p class="mb-1">date: {{ tag.date }}</p>
+        <p class="mb-1">edited: {{ tag.edited }}</p>
+        <p class="mb-1">language: {{ tag.language }}</p>
+        <p class="mb-1">type: {{ tag.type }}</p>
+        <p class="mb-1">faq:</p>
+        <ul class="list-group" *ngFor="let faq of tag.faqs">
+            <li class="list-group-item">{{ faq.question }}</li>
+            <li class="list-group-item">{{ faq.answer }}</li>
+        </ul>
+    </a>
+
+</div> -->
