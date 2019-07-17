@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import { ActivatedRoute } from '@angular/router';
-import { Select2Data } from 'ng-select2-component/public_api';
+
 
 @Component({
   selector: 'app-search-tag-category',
@@ -9,55 +9,63 @@ import { Select2Data } from 'ng-select2-component/public_api';
   styleUrls: ['./search-tag-category.component.css']
 })
 export class SearchTagCategoryComponent implements OnInit {
-  tags: any[] = [];
-  termino: string;
+  tags: any = [];
+  termino: string[] = [];
   ambitos: any = [];
-
-  ambitosSeleccionados: any;
-  select2Data: Select2Data;
+  dropdownSettings = {};
+  ambitosMDE:MDE[] = [];
+  ambitosSelecMDE:any = [];
+;
+  
 
   constructor(public generalService: GeneralService,
               public activatedRoute: ActivatedRoute) { }
     ngOnInit() {
-      this.ambitos = this.generalService.ambitos;
-      this.formatSelect2Data();
+       this.generalService.returnArrayAmbitos()
+       .subscribe(data => this.ambitos = data);
+      // this.ambitos = this.generalService.getAmbitosTemp();
+      this.dropdownSettings = {
+        singleSelection: false,
+        idField: 'id',
+        textField: 'text',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true,
+        limitSelection: 2
+      };
+      this.ambitosToMDE();
     }    
+
     searchTags(t: any[]) {
-        // THIS LOGIC IS ONLY HERE WHILE ANGULAR IS NOT CONNECTED TO THE BACK
-        // ONCE CONNECTED THIS LOGIC IS SUPPOSED TO BE RUN BY JAVA
-        let tagArray: any = [];
-        this.termino = this.termino.toLocaleLowerCase();
-        const tagsList = this.generalService.returnArrayTags();
-        for (let tag of tagsList){
-          for(let page of tag.pages){
-            if (page.id == t){
-            tagArray.push(tag);
-            }
-          }
-        }
-        this.tags = tagArray;
+      //this.tags = this.generalService.getTagTemp();
+      this.generalService.getTagsWithAmbitos(t)
+       .subscribe(data => this.tags = data);
+    }
+
+    deleteTag(i:number){
+      this.generalService.deleteTag(this.tags[i].keyId);
+    }
+
+    onSubmit(){
+      let sarr = [];
+      for(let amb of this.ambitosSelecMDE){
+        sarr.push(this.ambitosSelecMDE['text']);
       }
-        returnAmbitos(){
-          this.tags =  this.generalService.returnArrayTags();
+      this.searchTags(sarr);
     }
 
-
-    formatSelect2Data() {
-      let aux = [];
-      for (let amb of this.ambitos) {
-        let ambito = {};
-        ambito["value"] = amb.keyId;
-        ambito["label"] = amb.content;
-        ambito["item"] = amb;
-
-        aux.push(ambito);
+    ambitosToMDE(){
+      let i=0;
+      for(let amb of this.ambitos){
+        this.ambitosMDE.push({id: i, text: amb['keyId']});
+        i++;
       }
-      this.select2Data = JSON.parse(JSON.stringify(aux));
     }
+  }
 
-    onSubmit(f:any){
-      this.ambitosSeleccionados = f;
-      searchTags(this.ambitosSeleccionados);
-    }
+  interface MDE {
+     id:any;
+     text:any;
   }
 

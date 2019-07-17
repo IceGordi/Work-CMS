@@ -1,10 +1,25 @@
 import { Injectable, RootRenderer } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { error } from '@angular/compiler/src/util';
+import { throwError, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+
+const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json'
+    })
+  };
 
 @Injectable({
     providedIn: 'root',
 })
 export class GeneralService {
+
+    private _url = "localhost:8091/etiquetas";
+    
 
     // tslint:disable-next-line: max-line-length
     ambitos: any = [{"available":true,"content":"Prueba MOD1","createdDate":"2019-07-09T12:39:31","docId":"pageEtiqueta::Prueba::es","id":"Prueba::es","keyId":"Prueba","language":"es","lastModifiedDate":"2019-07-10T08:58:17","type":"pageEtiqueta"},
@@ -28,11 +43,57 @@ export class GeneralService {
     tags: any = [{"available":true,"content":"qweqwe","createdDate":"2019-07-15T16:10:47","docId":"etiqueta::qweqweqwe::es","id":"qweqweqwe::es","keyId":"qweqweqwe","language":"es","lastModifiedDate":"2019-07-15T16:11:36","pages":[{"available":true,"content":"Prueba MOD1","createdDate":"2019-07-09T12:39:31","docId":"pageEtiqueta::Prueba::es","id":"Prueba::es","keyId":"Prueba","language":"es","lastModifiedDate":"2019-07-10T08:58:17","type":"pageEtiqueta"},{"available":true,"content":"available","createdDate":"2019-07-09T16:25:35","docId":"pageEtiqueta::available::es","id":"available::es","keyId":"available","language":"es","lastModifiedDate":"2019-07-09T16:25:35","type":"pageEtiqueta"}],"type":"etiqueta"}];
 constructor(private http: HttpClient) {}
 
-returnArrayAmbitos(): any[]{
+returnArrayAmbitos(): any{
+    return this.http.get(this._url);
+}
+getAmbitosTemp(){
     return this.ambitos;
 }
-returnArrayTags(): any[]{
+getTagTemp(){
     return this.tags;
 }
+getTagsWithAmbitos(amb:any[]){
+    let searchParams = new HttpParams({
+        fromObject: {
+            ambitos: amb
+        }
+    });
+    
+    // this.http.get(url, { params: Params });
+        return this.http.get(this._url+"/keyIds/", { params : searchParams,
+                                                    headers :  httpOptions.headers})
+            .pipe(
+                catchError(this.handleError)
+            );
+    }
+deleteTag(id:String){
+    return this.http.delete(this._url+"/delete/${id}" , httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+}
+
+addTag(eti:any): any{
+return this.http.post(this._url+"/create",eti,httpOptions)
+    .pipe(
+        catchError(this.handleError)
+    );
+}
+
+private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError(
+      'Something bad happened; please try again later.');
+  };
 }
 

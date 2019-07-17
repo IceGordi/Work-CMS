@@ -10,15 +10,12 @@
 </div>
  -->
 
+<ng-multiselect-dropdown [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">
+</ng-multiselect-dropdown>
+<button type="submit" (click)="onSubmit()">Submit</button>
 
-<h3>13. FormControl</h3>
-<form #ambForm="ngForm">
-    <select2 [data]="select2Data" multiple="true" name="ambitos" ngModel (ngSubmit)="onSubmit(ambForm)"></select2>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-<h4>Search:</h4>
-<input [(ngModel)]="termino" (keyup.enter)="searchTags(termino)">
+<!-- <h4>Search:</h4>
+<input [(ngModel)]="termino" (keyup.enter)="searchTags(termino)"> -->
 
 <table class="table table-striped">
     <thead>
@@ -26,8 +23,8 @@
             <th scope="col">#</th>
             <th scope="col">Id</th>
             <th scope="col">Content</th>
-            <th scope="col">Utility 1</th>
-            <th scope="col">Utility 2</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -35,13 +32,13 @@
             <th scope="row">{{i+1}}</th>
             <td>{{ tag["id"] }}</td>
             <td>{{ tag["content"] }}</td>
-            <td></td>
-            <td></td>
+            <td> <i class="fa fa-heart"></i></td>
+            <td><i class="fas fa-trash-alt"></i></td>
             <!-- Rellenar luego anadiendo contenido-->
         </tr>
     </tbody>
 </table>
-
+<p><i class="fa fa-heart"></i></p>
 <!-- <div class="list-group">
 
     <a href="#" class="list-group-item list-group-item-action" *ngFor="let tag of tags; let i = index">

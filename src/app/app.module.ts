@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import{HttpClientModule} from '@angular/common/http'
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { TagPageComponent } from './components/tag-page/tag-page.component';
 import { SearchTagCategoryComponent } from './components/search-tag-category/search-tag-category.component';
-import {Select2Module} from "ng-select2-component";
 
 @NgModule({
   declarations: [
@@ -23,7 +22,8 @@ import {Select2Module} from "ng-select2-component";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    Select2Module
+    HttpClientModule,
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
