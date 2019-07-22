@@ -32,13 +32,17 @@
             <th scope="row">{{i+1}}</th>
             <td>{{ tag["id"] }}</td>
             <td>{{ tag["content"] }}</td>
-            <td> <i class="fa fa-heart"></i></td>
-            <td><i class="fas fa-trash-alt"></i></td>
+            <td>
+              <fa name = "edit" size="2x" (click)="onEdit(tag)"></fa>
+            </td>
+            <td>
+              <fa name = "trash-alt" size="2x" (click)="onDelete(tag)" ></fa>
+            </td>
             <!-- Rellenar luego anadiendo contenido-->
         </tr>
     </tbody>
 </table>
-<p><i class="fa fa-heart"></i></p>
+
 <!-- <div class="list-group">
 
     <a href="#" class="list-group-item list-group-item-action" *ngFor="let tag of tags; let i = index">

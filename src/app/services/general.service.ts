@@ -72,7 +72,12 @@ deleteTag(id:String){
       catchError(this.handleError)
     );
 }
-
+editTag(tag:any) {
+  return this.http.post(this._url+"/edit",tag,httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+}
 addTag(eti:any): any{
 return this.http.post(this._url+"/create",eti,httpOptions)
     .pipe(

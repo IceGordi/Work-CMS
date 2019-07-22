@@ -47,6 +47,14 @@ export class SearchTagCategoryComponent implements OnInit {
       this.generalService.deleteTag(this.tags[i].keyId);
     }
 
+    onEdit(tag:any){
+    this.generalService.editTag(tag);
+    }
+
+    onDelete(tag:any){
+    this.generalService.deleteTag(tag.keyId);
+    }
+
     onSubmit(){
       let sarr = [];
       for(let amb of this.ambitosSelecMDE){
