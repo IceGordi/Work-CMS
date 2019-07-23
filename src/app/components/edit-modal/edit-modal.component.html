@@ -1,33 +1,33 @@
-<div class = "form container">
-  <form (ngSubmit)="submitEditForm()">
-    <div class="form-group">
-      <label for="keyId">keyId</label>
-      <input type="text" class="form-control" required id = "keyId" [(ngModel)]="keyIdIni" (value) = "keyId" (>
-    </div>
+<!--<div class = "form container">-->
+<!--  <form (ngSubmit)="submitEditForm()">-->
+<!--    <div class="form-group">-->
+<!--      <label for="keyId">keyId</label>-->
+<!--      <input type="text" class="form-control" required id = "keyId" [(ngModel)]="keyIdIni" (value) = "keyId" (>-->
+<!--    </div>-->
 
-    <div class="form-group">
-      <label for="content">keyId</label>
-      <input type="text" class="form-control" required id = "content" [(ngModel)]="contentIni" (value) = "content" (>
-    </div>
+<!--    <div class="form-group">-->
+<!--      <label for="content">keyId</label>-->
+<!--      <input type="text" class="form-control" required id = "content" [(ngModel)]="contentIni" (value) = "content" (>-->
+<!--    </div>-->
 
-    <button type="submit" class="btn btn-success">Submit</button>
+<!--    <button type="submit" class="btn btn-success">Submit</button>-->
 
-  </form>
-</div>
+<!--  </form>-->
+<!--</div>-->
 
 
-<h1 mat-dialog-title>Hi {{data.name}}</h1>
+<h1 mat-dialog-title>Edit Tag</h1>
 <div mat-dialog-content>
-  <p>Edit Tag</p>
-
   <mat-form-field>
-    <input matInput readonly = true [(ngModel)]="keyIdIni">
+    <label for = keyId>keyId</label>
+    <input matInput id = keyId type = "text" readonly = true [(ngModel)]="keyId">
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="content" [value]="contentIni">
+    <label for = content>content</label>
+    <input matInput id = content [(ngModel)]="content">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button  [mat-dialog-close]="False">Close</button>
-  <button mat-button (click) = "submitEditForm()" [mat-dialog-close]="True">Submit</button>
+  <button mat-button (click) = "closeDialog('close')">Close</button>
+  <button mat-button (click) = "submitEditForm()" [mat-dialog-close]="formIsValid">Submit</button>
 </div>
