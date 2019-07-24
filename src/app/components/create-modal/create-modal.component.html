@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Create Tag</h1>
+<div mat-dialog-content>
+<p ng-hide = "!(checkValidityOfForm())">There are errors, please fix.</p>
+  <mat-form-field>
+    <label for = keyId>keyId</label>
+    <input matInput id = keyId [(ngModel)]="keyId">
+  </mat-form-field>
+  <mat-form-field>
+    <label for = content>content</label>
+    <input matInput id = content [(ngModel)]="content">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click) = "closeDialog('close')">Close</button>
+  <button mat-button (click) = "submitCreateForm()"  ng-hide = "!(checkValidityOfForm())"
+   [mat-dialog-close]="formIsValid">Submit</button>
+</div>

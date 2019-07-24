@@ -18,6 +18,7 @@
 
 <h1 mat-dialog-title>Edit Tag</h1>
 <div mat-dialog-content>
+  <p ng-hide = "!(checkValidityOfForm())">There are errors, please fix.</p>
   <mat-form-field>
     <label for = keyId>keyId</label>
     <input matInput id = keyId type = "text" readonly = true [(ngModel)]="keyId">
@@ -29,5 +30,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click) = "closeDialog('close')">Close</button>
-  <button mat-button (click) = "submitEditForm()" [mat-dialog-close]="formIsValid">Submit</button>
+  <button mat-button (click) = "submitEditForm()" ng-hide = "!(checkValidityOfForm())"[mat-dialog-close]="formIsValid">Submit</button>
 </div>

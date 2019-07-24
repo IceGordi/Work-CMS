@@ -1,6 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {GeneralService} from "../../services/general.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef,MatDialog} from "@angular/material";
+
 
 @Component({
   selector: 'app-edit-modal',
@@ -25,10 +26,11 @@ export class EditModalComponent implements OnInit,OnChanges {
   }
 submitEditForm(){
     this.generalService.editTag({keyId:this.keyId,content:this.content});
-    this.closeDialog("submit");
+    console.log("Closed dialog on click on: submit");
 }
 spreadData(){
     this.keyId = this.tagToEdit.keyId;
+    this.content = this.tagToEdit.content;
 }
 closeDialog(mes:string): void {
     console.log("Closed dialog on click on:" + mes);

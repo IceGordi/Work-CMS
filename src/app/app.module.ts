@@ -14,7 +14,9 @@ import { EditModalComponent } from './components/edit-modal/edit-modal.component
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from "@angular/material";
+import { CreateModalComponent } from './components/create-modal/create-modal.component';
 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import {MatButtonModule} from "@angular/material";
     TagPageComponent,
     SearchTagCategoryComponent,
     EditModalComponent,
+    CreateModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,8 +38,11 @@ import {MatButtonModule} from "@angular/material";
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ EditModalComponent,
+    CreateModalComponent,]
 })
 export class AppModule { }

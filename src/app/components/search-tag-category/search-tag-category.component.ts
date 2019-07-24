@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import { ActivatedRoute } from '@angular/router';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {EditModalComponent} from "../edit-modal/edit-modal.component";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { EditModalComponent } from "../edit-modal/edit-modal.component";
+import { CreateModalComponent } from "../create-modal/create-modal.component";
 
 @Component({
   selector: 'app-search-tag-category',
@@ -20,7 +21,7 @@ export class SearchTagCategoryComponent implements OnInit {
   
 
   constructor(public generalService: GeneralService,
-              public dialog: MatDialog) { }
+              public dialog: MatDialog,public dialog2: MatDialog) { }
     ngOnInit() {
        this.generalService.returnArrayAmbitos()
        .subscribe(data => this.ambitos = data);
@@ -46,18 +47,18 @@ export class SearchTagCategoryComponent implements OnInit {
 
     onEdit(tag:any){
     this.editingTag = tag;
-    this.openDialog();
+    this.openDialogEdit();
     }
 
-    openDialog(): void {
+    openDialogEdit(): void {
     const dialogRef = this.dialog.open(EditModalComponent, {
       width: '250px',
       data:  this.editingTag
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+      console.log('The edit dialog was closed');
+    })
   }
     onDelete(tag:any){
     this.generalService.deleteTag(tag.keyId);
@@ -78,8 +79,18 @@ export class SearchTagCategoryComponent implements OnInit {
         i++;
       }
     }
-  }
+    createTag(){
+      console.log("opening dialog create tag");
+      this.openDialogCreate();
+    }
 
+    openDialogCreate(): void {
+    const dialogRef2 = this.dialog2.open(CreateModalComponent, {
+      width: '250px',
+      data: {}
+    });
+  }
+  }
   interface MDE {
      id:any;
      text:any;

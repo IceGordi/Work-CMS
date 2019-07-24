@@ -60,7 +60,7 @@ getTagsWithAmbitos(amb:any[]){
     });
     
     // this.http.get(url, { params: Params });
-        return this.http.get(this._url+"/keyIds/", { params : searchParams,
+        return this.http.get(this._url+"/keyIds", { params : searchParams,
                                                     headers :  httpOptions.headers})
             .pipe(
                 catchError(this.handleError)
