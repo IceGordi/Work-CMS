@@ -10,59 +10,40 @@
 </div>
  -->
 
-<ng-multiselect-dropdown [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">
-</ng-multiselect-dropdown>
-<button type="button" class="btn btn-light" (click)="onSubmit()">Submit</button>
+<div class="searchContainer">
+    <ng-multiselect-dropdown class="select-dropdown" [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">
+    </ng-multiselect-dropdown>
+    <button type="button" class="btn btn-light" (click)="onSubmit()">Submit</button>
+</div>
 
 <!-- <h4>Search:</h4>
 <input [(ngModel)]="termino" (keyup.enter)="searchTags(termino)"> -->
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id</th>
-            <th scope="col">Content</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let tag of tags; let i = index">
-            <th scope="row">{{i+1}}</th>
-            <td>{{ tag["id"] }}</td>
-            <td>{{ tag["content"] }}</td>
-            <td>
-              <fa name = "edit" size="2x" (click)="onEdit(tag)"></fa>
-            </td>
-            <td>
-              <fa name = "trash-alt" size="2x" (click)="onDelete(tag)" ></fa>
-            </td>
-            <!-- Rellenar luego anadiendo contenido-->
-        </tr>
-    </tbody>
-</table>
-
-<button type="button" (click) = "createTag()" class="btn btn-light">Create Tag</button>
-<!-- <div class="list-group">
-
-    <a href="#" class="list-group-item list-group-item-action" *ngFor="let tag of tags; let i = index">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Tag: {{i}}</h5>
-            <small>{{tag.edited}}</small>
-        </div>
-        <p class="mb-1">id: {{ tag.id }}</p>
-        <p class="mb-1">category: {{ tag.category }}</p>
-        <p class="mb-1">estado: {{ tag.estado }}</p>
-        <p class="mb-1">date: {{ tag.date }}</p>
-        <p class="mb-1">edited: {{ tag.edited }}</p>
-        <p class="mb-1">language: {{ tag.language }}</p>
-        <p class="mb-1">type: {{ tag.type }}</p>
-        <p class="mb-1">faq:</p>
-        <ul class="list-group" *ngFor="let faq of tag.faqs">
-            <li class="list-group-item">{{ faq.question }}</li>
-            <li class="list-group-item">{{ faq.answer }}</li>
-        </ul>
-    </a>
-
-</div> -->
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id</th>
+                <th scope="col">Content</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let tag of tags; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{ tag["id"] }}</td>
+                <td>{{ tag["content"] }}</td>
+                <td>
+                    <fa name="edit" size="2x" (click)="onEdit(tag)"></fa>
+                </td>
+                <td>
+                    <fa name="trash-alt" size="2x" (click)="onDelete(tag)"></fa>
+                </td>
+                <!-- Rellenar luego anadiendo contenido-->
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" (click)="createTag()" class="btn btn-light">Create Tag</button>
+</div>

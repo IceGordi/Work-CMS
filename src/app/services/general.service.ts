@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class GeneralService {
 
-    private _url = "localhost:8091/etiquetas";
+    private _url = "localhost:8080/etiquetas";
     
 
     // tslint:disable-next-line: max-line-length
@@ -46,22 +46,15 @@ constructor(private http: HttpClient) {}
 returnArrayAmbitos(): any{
     return this.http.get(this._url);
 }
-getAmbitosTemp(){
-    return this.ambitos;
+getAmbitos(keyIds:String[]){
+  return this.http.get(this._url+"/ambito/{keyIds}",{headers: httpOptions.headers})
+    .pipe(
+      catchError(this.handleError)
+    );
 }
-getTagTemp(){
-    return this.tags;
-}
-getTagsWithAmbitos(amb:any[]){
-    let searchParams = new HttpParams({
-        fromObject: {
-            ambitos: amb
-        }
-    });
-    
+getTagsWithAmbitos(amb:any[]){    
     // this.http.get(url, { params: Params });
-        return this.http.get(this._url+"/keyIds", { params : searchParams,
-                                                    headers :  httpOptions.headers})
+        return this.http.get(this._url+"/etiqueta/ambitos/${amb}", {headers :  httpOptions.headers})
             .pipe(
                 catchError(this.handleError)
             );
@@ -79,10 +72,17 @@ editTag(tag:any) {
     );
 }
 addTag(eti:any): any{
-return this.http.post(this._url+"/create",eti,httpOptions)
+return this.http.post(this._url+"/create/etiqueta",eti,httpOptions)
     .pipe(
         catchError(this.handleError)
     );
+}
+
+returnLanguages(){
+  return this.http.get(this._url+"/languages/all")
+  .pipe(
+    catchError(this.handleError)
+  );
 }
 
 private handleError(error: HttpErrorResponse) {

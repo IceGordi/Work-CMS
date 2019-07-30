@@ -1,0 +1,4 @@
+#wrapper #content-wrapper {
+    width: 100%;
+    display: flex;
+}

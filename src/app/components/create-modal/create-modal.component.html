@@ -1,17 +1,55 @@
-<h1 mat-dialog-title>Create Tag</h1>
+<!-- <h1 mat-dialog-title>Create Tag</h1>
 <div mat-dialog-content>
-<p ng-hide = "!(checkValidityOfForm())">There are errors, please fix.</p>
-  <mat-form-field>
-    <label for = keyId>keyId</label>
-    <input matInput id = keyId [(ngModel)]="keyId">
-  </mat-form-field>
-  <mat-form-field>
-    <label for = content>content</label>
-    <input matInput id = content [(ngModel)]="content">
-  </mat-form-field>
+    <p ng-hide="!(checkValidityOfForm())">There are errors, please fix.</p>
+    <mat-form-field>
+        <label for=keyId>keyId</label>
+        <input matInput id="keyId" [(ngModel)]="keyId">
+    </mat-form-field>
+    <mat-form-field>
+        <label for="content">Content</label>
+        <input matInput id="content" [(ngModel)]="content">
+    </mat-form-field>
+    <mat-form-field>
+    </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click) = "closeDialog('close')">Close</button>
-  <button mat-button (click) = "submitCreateForm()"  ng-hide = "!(checkValidityOfForm())"
-   [mat-dialog-close]="formIsValid">Submit</button>
+    <button mat-button (click)="closeDialog('close')">Close</button>
+    <button mat-button (click)="submitCreateForm()" ng-hide="!(checkValidityOfForm())" [mat-dialog-close]="formIsValid">Submit</button>
+</div> -->
+
+
+<h1 mat-dialog-title>Create Tag</h1>
+<div mat-dialog-content>
+    <form>
+        <mat-form-field>
+            <mat-label>Availability</mat-label>
+            <mat-radio-group [(value)]="available">
+                <mat-radio-button value="true">Enable</mat-radio-button>
+                <mat-radio-button value="false">Disable</mat-radio-button>
+            </mat-radio-group>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>KeyId</mat-label>
+            <label for="keyId"></label>
+            <input matInput placeholder="Required" [(ngModel)]="keyId" name="keyID" required>
+        </mat-form-field>
+        <ng-multiselect-dropdown class="select-dropdown" [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">
+        </ng-multiselect-dropdown>
+        <mat-form-field>
+            <mat-tab-group>
+                <mat-tab label="ES">
+                    <mat-form-field *ngFor="let lang of languages;let i = index">
+                        <textarea [(ngModel)]="contents[i]" matInput></textarea>
+                    </mat-form-field>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-form-field>
+    </form>
+    <div mat-dialog-actions>
+        <div class="btn-group" role="group" aria-label="buttons">
+            <button mat-button (click)="closeDialog('close')" type="button" class="btn btn-secondary">Cloe</button>
+            <button mat-button (click)="submitCreateForm()" type="button" class="btn btn-secondary">Submit</button>
+        </div>
+        <!-- <button mat-button (click)="submitCreateForm()" ng-hide="!(checkValidityOfForm())" [mat-dialog-close]="formIsValid">Submit</button> -->
+    </div>
 </div>

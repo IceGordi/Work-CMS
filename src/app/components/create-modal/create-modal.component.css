@@ -5,3 +5,7 @@ input {
     margin: 10px;
     font-size: 15px;
 }
+
+mat-tab-label {
+    min-width: 1px !important;
+}

@@ -1,1 +1,24 @@
-body {margin:10px;padding:10px}
+body {
+    margin: auto;
+    padding: auto
+}
+
+.container {
+    width: 1000px;
+    /* Or whatever */
+    height: auto;
+    /* Or whatever */
+    margin: auto;
+}
+
+.searchContainer {
+    width: 975px;
+    height: auto;
+    margin: auto;
+}
+
+.button-search {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
