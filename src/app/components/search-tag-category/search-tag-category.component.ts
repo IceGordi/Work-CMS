@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
-import { ActivatedRoute } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog} from '@angular/material/dialog';
 import { EditModalComponent } from "../edit-modal/edit-modal.component";
 import { CreateModalComponent } from "../create-modal/create-modal.component";
-
+import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
 @Component({
   selector: 'app-search-tag-category',
   templateUrl: './search-tag-category.component.html',
@@ -19,9 +18,11 @@ export class SearchTagCategoryComponent implements OnInit {
   ambitosSelecMDE:any = [];
   editingTag:any;
   
+  modalRef: MDBModalRef;
 
-  constructor(public generalService: GeneralService,
-              public dialog: MatDialog,public dialog2: MatDialog) { }
+
+
+  constructor(public generalService: GeneralService,public mdbService: MDBModalService,) { }
     ngOnInit() {
        this.generalService.returnArrayAmbitos()
        .subscribe(data => this.ambitos = data);
@@ -47,19 +48,7 @@ export class SearchTagCategoryComponent implements OnInit {
 
     onEdit(tag:any){
     this.editingTag = tag;
-    this.openDialogEdit();
     }
-
-    openDialogEdit(): void {
-    const dialogRef = this.dialog.open(EditModalComponent, {
-      width: '250px',
-      data:  this.editingTag
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The edit dialog was closed');
-    })
-  }
     onDelete(tag:any){
     this.generalService.deleteTag(tag.keyId);
     }
@@ -80,16 +69,8 @@ export class SearchTagCategoryComponent implements OnInit {
       }
     }
     createTag(){
-      console.log("opening dialog create tag");
-      this.openDialogCreate();
+      this.modalRef = this.mdbService.show(CreateModalComponent);
     }
-
-    openDialogCreate(): void {
-    const dialogRef2 = this.dialog2.open(CreateModalComponent, {
-      width: '250px',
-      data: {}
-    });
-  }
   }
   interface MDE {
      id:any;

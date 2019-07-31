@@ -1,6 +1,36 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Home</h1>
+    <h1 class="h3 mb-0">Home</h1>
 </div>
 <div class="row">
-
-</div>
+    <div class="col-md-6 col-xl-4">
+        <!-- Add Language Stuff Later -->
+    </div>
+    <div class="col-md-6 col-xl-8">
+        <div class="card shadow mb-4 w-100">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-secondary">Ambitos</h6>
+                <button class="btn btn-sm btn-outline-secondary" (click)="onCreateAmbito()">Nuevo ámbito</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Ambito</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let amb of ambitos">
+                                <th scope="row" {{}}>amb.keyId</th>
+                                <td class="text-right">
+                                    <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
+                                    <fa name="trash-alt" size="2x" (click)="onDelete(amb)"></fa>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

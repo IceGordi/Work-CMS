@@ -1,8 +1,9 @@
 import {Component, Inject, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {GeneralService} from "../../services/general.service";
-import {MAT_DIALOG_DATA, MatDialogRef,MatDialog} from "@angular/material";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import { ValidatorServiceService } from '../../services/validator-service.service';
-import { of } from 'rxjs';
+import { MDBModalRef } from 'angular-bootstrap-md';
+
 
 @Component({
   selector: 'app-create-modal',
@@ -10,6 +11,9 @@ import { of } from 'rxjs';
   styleUrls: ['./create-modal.component.css']
 })
 export class CreateModalComponent implements OnInit {
+  
+  
+  
   ambitos: any = [];
   dropdownSettings = {};
   ambitosMDE:MDE[] = [];
@@ -28,10 +32,9 @@ export class CreateModalComponent implements OnInit {
  
 
 
+
   constructor(public generalService: GeneralService,
-              public validatorServiceService: ValidatorServiceService,
-              public dialogRef2: MatDialogRef<CreateModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) { }
+    public modalRef: MDBModalRef) { }
 
   ngOnInit() {
     this.generalService.returnArrayAmbitos()
@@ -46,29 +49,18 @@ export class CreateModalComponent implements OnInit {
       allowSearchFilter: true,
       limitSelection: 2
     };
-    this.generalService.returnLanguages()
-    .subscribe(data => this.languages = data['languages']);
+    this.languages =  this.generalService.returnLanguages();
+   // .subscribe(data => this.languages = data['languages']);
   }
   ngOnChanges(changes:SimpleChanges){
     // this.formIsValid = this.checkValidityOfForm();
   }
-  closeDialog(mes:string){
-    console.log("Closed dialog on click on:" + mes);
-    this.dialogRef2.close();
-  }
+ 
 
   // checkValidityOfForm():boolean{
   //  return this.validatorServiceService.validateForm();
   // }
-  submitCreateForm(){
-    let index = 0;
-    for(let lang of this.languages){
-    this.generalService.addTag({keyId:this.keyId,content:this.contents[index],language:lang,id:this.keyId + "::" + lang,
-                                docId: "Etiqueta" + "::" + this.keyId + "::" + lang, created:null,modified:null,available:true,
-                                pages:this.filterAmbitos()});
-   index++;
-                           }
-  }
+
   ambitosToMDE(){
     let i=0;
     for(let amb of this.ambitos){
@@ -76,9 +68,9 @@ export class CreateModalComponent implements OnInit {
       i++;
     }
   }
-  filterAmbitos():any{
+  filterAmbitos(arr:any):any{
     let ambitosArr:any[];
-    for(let sel of this. ambitosSelecMDE)
+    for(let sel of arr)
     {
       for(let amb of this.ambitos ){
           if(sel.text === amb.keyId)
@@ -88,6 +80,22 @@ export class CreateModalComponent implements OnInit {
     return ambitosArr;
   }
   
+
+  onFormSubmit(addEtiquetaForm: any){
+    let arr:any[];
+    for(let lang of this.languages){
+      arr.push({available: true,
+               created: (new Date).getTime(),
+              keyId: addEtiquetaForm.controls['keyId'].value,
+              id: addEtiquetaForm.controls['keyId'].value + "::" + lang,
+              docId: "Etiqueta::" + addEtiquetaForm.controls['keyId'].value + "::" + lang,
+              content:addEtiquetaForm.controls['content'+lang].value,
+              modified: (new Date).getDate(),
+              pages: this.filterAmbitos(addEtiquetaForm.controls['pages'].value),
+            })
+    }
+    this.modalRef.hide();
+    }
 }
 
 interface MDE {

@@ -1,4 +1,14 @@
 #wrapper #content-wrapper {
     width: 100%;
     display: flex;
+    overflow-x: hidden;
+}
+
+.row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -.75rem;
+    margin-left: -.75rem;
 }

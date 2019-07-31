@@ -20,6 +20,7 @@ export class GeneralService {
 
     private _url = "localhost:8080/etiquetas";
     
+    languages:String[] = ["es","en","de"];
 
     // tslint:disable-next-line: max-line-length
     ambitos: any = [{"available":true,"content":"Prueba MOD1","createdDate":"2019-07-09T12:39:31","docId":"pageEtiqueta::Prueba::es","id":"Prueba::es","keyId":"Prueba","language":"es","lastModifiedDate":"2019-07-10T08:58:17","type":"pageEtiqueta"},
@@ -78,11 +79,19 @@ return this.http.post(this._url+"/create/etiqueta",eti,httpOptions)
     );
 }
 
+addAmbito(amb:any){
+  return this.http.post(this._url+"/create/ambito",amb,httpOptions)
+    .pipe(
+        catchError(this.handleError)
+    );
+}
+
 returnLanguages(){
-  return this.http.get(this._url+"/languages/all")
-  .pipe(
-    catchError(this.handleError)
-  );
+  return this.languages;
+  // return this.http.get(this._url+"/languages/all")
+  // .pipe(
+  //   catchError(this.handleError)
+  // );
 }
 
 private handleError(error: HttpErrorResponse) {

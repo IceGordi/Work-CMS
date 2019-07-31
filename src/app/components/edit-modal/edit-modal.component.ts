@@ -14,9 +14,7 @@ export class EditModalComponent implements OnInit,OnChanges {
   content:any="";
   formIsValid:boolean = false;
 
-  constructor(public generalService: GeneralService,
-              public dialogRef: MatDialogRef<EditModalComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(public generalService: GeneralService) {}
 
   ngOnInit() {
     this.spreadData();
@@ -32,10 +30,7 @@ spreadData(){
     this.keyId = this.tagToEdit.keyId;
     this.content = this.tagToEdit.content;
 }
-closeDialog(mes:string): void {
-    console.log("Closed dialog on click on:" + mes);
-    this.dialogRef.close();
-  }
+
 
 checkValidityOfForm():boolean{
   return !(this.content === null || this.keyId === null || this.keyId === "");
