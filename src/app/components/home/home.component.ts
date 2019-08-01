@@ -3,6 +3,7 @@ import { GeneralService } from 'src/app/services/general.service';
 import { MatDialog } from '@angular/material';
 import { CreateAmbitoComponent } from '../create-ambito/create-ambito.component';
 import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
+import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'app-home',
@@ -15,13 +16,14 @@ export class HomeComponent implements OnInit {
   modalRef: MDBModalRef;
 
   constructor(public generalService:GeneralService,
-    public mdbService: MDBModalService) {
+    public mdbService: MDBModalService,
+    public validator: ValidationService) {
               this.generalService.returnArrayAmbitos()
-              .subscribe(data=> this.ambitos = data);
+              .subscribe(data=> this.ambitos = this.validator.filterAmbitos(data));
+              console.log(this.ambitos);
               }
 
   ngOnInit() {
-    this.ambitos = this.generalService.returnArrayAmbitos();
   }
 
   onCreateAmbito(){

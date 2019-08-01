@@ -1,7 +1,6 @@
 import {Component, Inject, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {GeneralService} from "../../services/general.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import { ValidatorServiceService } from '../../services/validator-service.service';
 import { MDBModalRef } from 'angular-bootstrap-md';
 
 
@@ -14,7 +13,7 @@ export class CreateModalComponent implements OnInit {
   
   
   
-  ambitos: any = [];
+  ambitos: any[] = [];
   dropdownSettings = {};
   ambitosMDE:MDE[] = [];
   ambitosSelecMDE:any = [];
