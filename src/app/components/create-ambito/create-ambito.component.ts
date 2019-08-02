@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { GeneralService } from 'src/app/services/general.service';
 import { MDBModalRef } from 'angular-bootstrap-md';
 
+
 @Component({
   selector: 'app-create-ambito',
   templateUrl: './create-ambito.component.html',
@@ -10,8 +11,8 @@ import { MDBModalRef } from 'angular-bootstrap-md';
 })
 export class CreateAmbitoComponent implements OnInit {
 
-  keyId: String;
-  content: String;
+  keyId: String="";
+  content: String="";
 
 
   constructor(public generalService: GeneralService,
@@ -21,14 +22,24 @@ export class CreateAmbitoComponent implements OnInit {
   }
 
   submitCreateForm(addAmbitoForm:any){
-    this.generalService.addAmbito({keyId:addAmbitoForm.controls['keyId'].value,
-    content:addAmbitoForm.controls['content'].value,
-    language:"es",id:this.keyId + "::es",
-    docId: "Ambito::" + this.keyId + "::es",
-     created:(new Date).getTime(),
-     modified:(new Date).getTime(),
-     available:true,
-     type:"Ambito"});
+    let amb:any = {keyId:addAmbitoForm.value.keyId,
+      content:addAmbitoForm.value.content,
+      language:"es",id:addAmbitoForm.value.keyId + "::es",
+      docId: "ambito::" +addAmbitoForm.value.keyId + "::es",
+       created:(new Date).getTime(),
+       modified:(new Date).getTime(),
+       available:true,
+       type:"ambito"}
+    let ambArr: any[] = [];
+    ambArr.push(amb);
+    this.generalService.addAmbito(ambArr)
+     .subscribe(
+       result=> console.log("Houston we created this things: {}",result)
+     );
+
      this.modalRef.hide();
+  }
+  onClose(event: any) {
+    console.log(event);
   }
 }

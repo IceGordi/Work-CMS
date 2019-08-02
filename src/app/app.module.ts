@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CreateAmbitoComponent } from './components/create-ambito/create-ambito.component';
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { EditAmbitoComponent } from './components/edit-ambito/edit-ambito.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     EditModalComponent,
     CreateModalComponent,
     CreateAmbitoComponent,
+    EditAmbitoComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ CreateAmbitoComponent, CreateModalComponent ]
+  entryComponents: [ CreateAmbitoComponent, CreateModalComponent, EditAmbitoComponent ]
 })
 export class AppModule { }

@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 import { ValidationService } from './validation.service';
 
 
-const headers =  new HttpHeaders().append('Accept', 'application/json');
+const headers =  new HttpHeaders().append('Content-Type',  'application/json');
 
 @Injectable({
     providedIn: 'root',
@@ -89,7 +89,12 @@ addAmbito(amb:any){
         catchError(this.handleError)
     );
 }
-
+editAmbito(amb:any){
+  return this.http.post(this._url+"/update/ambito",amb,{headers: headers})
+    .pipe(
+        catchError(this.handleError)
+    );
+}
 returnLanguages(){
   return this.languages;
   // return this.http.get(this._url+"/languages/all")

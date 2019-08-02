@@ -17,16 +17,19 @@
                         <thead>
                             <tr>
                                 <th scope="col">Ambito</th>
-                                <th scope="col"></th>
+                                <th scope="col"> </th>
+                                <th scope="col"> </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let amb of ambitos">
-                                <th scope="row" {{}}>amb.keyId</th>
-                                <td class="text-right">
+                                <th scope="row">{{amb.keyId}}</th>
+                                <th>
                                     <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
-                                    <fa name="trash-alt" size="2x" (click)="onDelete(amb)"></fa>
-                                </td>
+                                </th>
+                                <th>
+                                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                                </th>
                             </tr>
                         </tbody>
                     </div>
