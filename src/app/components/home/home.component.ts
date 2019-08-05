@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit {
 
   url:String;
 
+  languages:String[];
+
   ambitos:any[];
   modalRef: MDBModalRef;
   subscriptions:Subscription;
@@ -36,10 +38,13 @@ export class HomeComponent implements OnInit {
       this.generalService.returnArrayAmbitos()
         .subscribe(data => this.ambitos = data);
       console.log(this.ambitos);
+      //this.generalService.returnLanguages().subscribe(data => this.languages = data);
+      this.languages = this.generalService.returnLanguages();
     });
     this.generalService.returnArrayAmbitos()
       .subscribe(data => this.ambitos = data);
     console.log(this.ambitos);
+    this.languages = this.generalService.returnLanguages();
   }
   onCreateAmbito(){
     this.modalRef = this.mdbService.show(CreateAmbitoComponent, {
@@ -89,7 +94,7 @@ export class HomeComponent implements OnInit {
   onDelete(amb:any){
     this.generalService.deleteAmbito(amb.keyId)
       .subscribe(
-        result => console.log("Permanently deleted item: {}", result)
+        () => console.log("Permanently deleted item: {}", amb.toString())
       );
   }
   // ngOnDestroy(){

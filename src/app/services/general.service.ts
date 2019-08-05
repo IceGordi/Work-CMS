@@ -69,12 +69,14 @@ export class GeneralService {
   deleteTag(id:String){
       return this.http.delete(this._url+"/delete/etiqueta/${id}" , {headers: headers})
       .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
         catchError(this.handleError)
       );
   }
-  deleteAmbito(id:String){
-    return this.http.delete(this._url+"/delete/ambito/${id}" , {headers: headers})
+  deleteAmbito(docId:String){
+    return this.http.delete(this._url+"/delete/ambito/" +docId, {headers: headers})
       .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
         catchError(this.handleError)
       );
   }

@@ -53,7 +53,24 @@ export class SearchTagCategoryComponent implements OnInit {
     this.generalService.deleteTag(tag.keyId);
     }
 
-    onSubmit(){
+    onChangeState(tag:any,state:boolean){
+    let tagarr:any[] = [];
+    tagarr.push({
+        keyId:tag.keyId,
+        content:tag.content,
+        language:tag.language,
+        id:tag.id,
+        docId:tag.docId,
+        created:tag.created,
+        modified:tag.modified,
+        available:state,
+        type:tag.type,
+      pages:tag.pages
+      });
+    this.generalService.editTag(tagarr);
+    }
+
+    onSubmit(etiqueta:any){
       let sarr = [];
       for(let amb of this.ambitosSelecMDE){
         sarr.push(this.ambitosSelecMDE['text']);

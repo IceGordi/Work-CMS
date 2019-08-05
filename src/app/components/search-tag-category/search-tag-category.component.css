@@ -22,3 +22,27 @@ body {
     justify-content: flex-end;
     align-items: center;
 }
+
+.card-deck{
+  width:100%;
+}
+
+.card-body{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+#etiquetaCard {
+  line-height: 100px;
+  margin: 10px;
+  text-align: center;
+  vertical-align: middle;
+}
+#icon-col{
+  padding: 1%;
+}
+.emorow{
+  height:33%;
+  margin: 0;
+}
