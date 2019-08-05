@@ -2,6 +2,7 @@ import {Component, Inject, Input, OnChanges, OnInit, SimpleChange, SimpleChanges
 import {GeneralService} from "../../services/general.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import { MDBModalRef } from 'angular-bootstrap-md';
+import {Subject} from "rxjs";
 
 
 @Component({
@@ -28,7 +29,6 @@ export class CreateModalComponent implements OnInit {
   contents:String[];
   
   languages:String[];
- 
 
 
 
@@ -51,10 +51,10 @@ export class CreateModalComponent implements OnInit {
     this.languages =  this.generalService.returnLanguages();
    // .subscribe(data => this.languages = data['languages']);
   }
-  ngOnChanges(changes:SimpleChanges){
-    // this.formIsValid = this.checkValidityOfForm();
-  }
- 
+  // ngOnChanges(changes:SimpleChanges){
+  //   // this.formIsValid = this.checkValidityOfForm();
+  // }
+
 
   // checkValidityOfForm():boolean{
   //  return this.validatorServiceService.validateForm();
@@ -81,7 +81,7 @@ export class CreateModalComponent implements OnInit {
   
 
   onFormSubmit(addEtiquetaForm: any){
-    let arr:any[];
+    let arr:any[] = [];
     for(let lang of this.languages){
       arr.push({available: true,
                created: (new Date).getTime(),
@@ -93,6 +93,9 @@ export class CreateModalComponent implements OnInit {
               pages: this.filterAmbitos(addEtiquetaForm.controls['pages'].value),
             })
     }
+    this.generalService.addTag(arr).subscribe(
+      result=> console.log("Houston we created this things: {}",result)
+    );
     this.modalRef.hide();
     }
 }

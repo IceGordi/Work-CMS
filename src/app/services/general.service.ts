@@ -1,11 +1,12 @@
 import { Injectable, RootRenderer } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { error } from '@angular/compiler/src/util';
 import { throwError, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ValidationService } from './validation.service';
+import {tap} from "rxjs/operators";
 
 
 const headers =  new HttpHeaders().append('Content-Type',  'application/json');
@@ -15,9 +16,8 @@ const headers =  new HttpHeaders().append('Content-Type',  'application/json');
 })
 export class GeneralService {
 
-
-
-    private _url = "http://localhost:8080";
+  private _refreshNeeded$ = new Subject<void>();
+  private _url = "http://localhost:8080";
     
     languages:String[] = ["es","en","de"];
 
@@ -41,67 +41,78 @@ export class GeneralService {
 
 
     tags: any = [{"available":true,"content":"qweqwe","createdDate":"2019-07-15T16:10:47","docId":"etiqueta::qweqweqwe::es","id":"qweqweqwe::es","keyId":"qweqweqwe","language":"es","lastModifiedDate":"2019-07-15T16:11:36","pages":[{"available":true,"content":"Prueba MOD1","createdDate":"2019-07-09T12:39:31","docId":"pageEtiqueta::Prueba::es","id":"Prueba::es","keyId":"Prueba","language":"es","lastModifiedDate":"2019-07-10T08:58:17","type":"pageEtiqueta"},{"available":true,"content":"available","createdDate":"2019-07-09T16:25:35","docId":"pageEtiqueta::available::es","id":"available::es","keyId":"available","language":"es","lastModifiedDate":"2019-07-09T16:25:35","type":"pageEtiqueta"}],"type":"etiqueta"}];
-constructor(private http: HttpClient,
-            private validator:ValidationService) {
-            }
 
-returnArrayAmbitos(): any{
-     return this.http.get(this._url+"/ambito/all",{headers: headers})
-    .pipe(
-      catchError(this.handleError)
-    );
-}
-getAmbitos(keyIds:String[]){
-  return this.http.get(this._url+"/ambito/{keyIds}",{headers: headers})
-    .pipe(
-      catchError(this.handleError)
-    );
-}
-getTagsWithAmbitos(amb:any[]){    
-    // this.http.get(url, { params: Params });
-        return this.http.get(this._url+"/etiqueta/ambitos/${amb}",{headers: headers})
-            .pipe(
-                catchError(this.handleError)
-            );
-    }
-deleteTag(id:String){
-    return this.http.delete(this._url+"/delete/${id}" , {headers: headers})
-    .pipe(
-      catchError(this.handleError)
-    );
-}
-editTag(tag:any) {
-  return this.http.post(this._url+"/update/etiqueta",tag, {headers: headers})
-    .pipe(
-      catchError(this.handleError)
-    );
-}
-addTag(eti:any): any{
-return this.http.post(this._url+"/create/etiqueta",eti,{headers: headers})
-    .pipe(
-        catchError(this.handleError)
-    );
-}
+  constructor(private http: HttpClient, private validator:ValidationService) {}
 
-addAmbito(amb:any){
-  return this.http.post(this._url+"/create/ambito",amb,{headers: headers})
-    .pipe(
+  get refreshNeeded$(){
+    return this._refreshNeeded$;
+  }
+  returnArrayAmbitos(): any{
+       return this.http.get(this._url+"/ambito/all",{headers: headers})
+      .pipe(
         catchError(this.handleError)
-    );
-}
-editAmbito(amb:any){
-  return this.http.post(this._url+"/update/ambito",amb,{headers: headers})
-    .pipe(
+      );
+  }
+  getAmbitos(keyIds:String[]){
+    return this.http.get(this._url+"/ambito/{keyIds}",{headers: headers})
+      .pipe(
         catchError(this.handleError)
-    );
-}
-returnLanguages(){
-  return this.languages;
-  // return this.http.get(this._url+"/languages/all")
-  // .pipe(
-  //   catchError(this.handleError)
-  // );
-}
+      );
+  }
+  getTagsWithAmbitos(amb:any[]){
+      // this.http.get(url, { params: Params });
+          return this.http.get(this._url+"/etiqueta/ambitos/${amb}",{headers: headers})
+              .pipe(
+                  catchError(this.handleError)
+              );
+      }
+  deleteTag(id:String){
+      return this.http.delete(this._url+"/delete/etiqueta/${id}" , {headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  deleteAmbito(id:String){
+    return this.http.delete(this._url+"/delete/ambito/${id}" , {headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  addTag(eti:any): any{
+  return this.http.post(this._url+"/create/etiqueta",eti,{headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
+        catchError(this.handleError)
+      );
+  }
+  addAmbito(amb:any){
+    return this.http.post(this._url+"/create/ambito",amb,{headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
+        catchError(this.handleError)
+      );
+  }
+  editAmbito(amb:any){
+    return this.http.post(this._url+"/update/ambito",amb,{headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
+        catchError(this.handleError)
+      );
+  }
+  editTag(tag:any) {
+    return this.http.post(this._url+"/update/etiqueta",tag, {headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next();}),
+        catchError(this.handleError)
+      );
+  }
+  returnLanguages(){
+    return this.languages;
+    // return this.http.get(this._url+"/languages/all")
+    // .pipe(
+    //   catchError(this.handleError)
+    // );
+  }
 
 private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

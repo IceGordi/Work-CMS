@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
-import { MatDialog } from '@angular/material';
 import { CreateAmbitoComponent } from '../create-ambito/create-ambito.component';
 import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
 import { ValidationService } from '../../services/validation.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription} from 'rxjs';
 import { EditAmbitoComponent } from '../edit-ambito/edit-ambito.component';
+import {Router} from "@angular/router";
+import{Location} from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -14,33 +15,33 @@ import { EditAmbitoComponent } from '../edit-ambito/edit-ambito.component';
 })
 export class HomeComponent implements OnInit {
 
+  url:String;
+
   ambitos:any[];
   modalRef: MDBModalRef;
   subscriptions:Subscription;
-  private _unsuscribeAll: Subject;
   constructor(public generalService:GeneralService,
     public mdbService: MDBModalService,
-    public validator: ValidationService) {
+    public validator: ValidationService,
+              public router: Router,
+              public location:Location) {
               this.generalService.returnArrayAmbitos()
               .subscribe(data=> this.ambitos =data);
               console.log(this.ambitos);
-              this._unsuscribeAll = new Subject();
+              this.url = this.location.path();
               }
 
   ngOnInit() {
+    this.generalService.refreshNeeded$.subscribe(() => {
+      this.generalService.returnArrayAmbitos()
+        .subscribe(data => this.ambitos = data);
+      console.log(this.ambitos);
+    });
     this.generalService.returnArrayAmbitos()
-              .pipe(takeUntil(this._unsuscribeAll))
-              .subscribe(data=> this.ambitos =data);
-              console.log(this.ambitos);
-  }
-  public refresh(){
-    this.ngOnInit();
+      .subscribe(data => this.ambitos = data);
+    console.log(this.ambitos);
   }
   onCreateAmbito(){
-    this.subscriptions = this.mdbService.open.subscribe(() => console.log('open'));
-    this.subscriptions.add(this.mdbService.opened.subscribe(() => console.log('opened')));
-    this.subscriptions.add(this.mdbService.close.subscribe(() => console.log('close')));
-    this.subscriptions.add(this.mdbService.closed.subscribe(() => {console.log('closed');this.ngOnInit(); this.unSubscribe()}));
     this.modalRef = this.mdbService.show(CreateAmbitoComponent, {
       backdrop: true,
       keyboard: true,
@@ -53,10 +54,6 @@ export class HomeComponent implements OnInit {
   });
   }
   onEdit(amb:any){
-    this.subscriptions = this.mdbService.open.subscribe(() => console.log('open'));
-    this.subscriptions.add(this.mdbService.opened.subscribe(() => console.log('opened')));
-    this.subscriptions.add(this.mdbService.close.subscribe(() => console.log('close')));
-    this.subscriptions.add(this.mdbService.closed.subscribe(() => {console.log('closed');this.ngOnInit(); this.unSubscribe()}));
     this.modalRef = this.mdbService.show(EditAmbitoComponent, {
       backdrop: true,
       keyboard: true,
@@ -71,9 +68,32 @@ export class HomeComponent implements OnInit {
       }
   });
   }
-  onDelete(amb:any){}
-  unSubscribe(){
-      this.subscriptions.unsubscribe();
-    }
+  onChangeState(amb:any,state:boolean){
+   let ambito:any[] = [];
+    ambito.push({
+     keyId:amb.keyId,
+     content:amb.content,
+     language:amb.language,
+     id:amb.id,
+     docId:amb.docId,
+     created:amb.created,
+     modified:amb.modified,
+     available:state,
+     type:amb.type,
+   });
+    this.generalService.editAmbito(ambito).subscribe(
+      result=> console.log("Houston we changed the state of the following:",result)
+    )
+  }
+
+  onDelete(amb:any){
+    this.generalService.deleteAmbito(amb.keyId)
+      .subscribe(
+        result => console.log("Permanently deleted item: {}", result)
+      );
+  }
+  // ngOnDestroy(){
+  //     this.subscriptions.unsubscribe();
+  //   }
   }
 

@@ -19,17 +19,24 @@
                                 <th scope="col">Ambito</th>
                                 <th scope="col"> </th>
                                 <th scope="col"> </th>
+                                <th scope="col"> </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let amb of ambitos">
                                 <th scope="row">{{amb.keyId}}</th>
-                                <th>
-                                    <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
-                                </th>
-                                <th>
-                                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-                                </th>
+                              <th>
+                                  <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
+                              </th>
+                              <th *ngIf="amb.available==true">
+                                <i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(amb,false)"></i>
+                              </th>
+                              <th *ngIf="amb.available==false">
+                                <i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(amb,true)"></i>
+                              </th>
+                              <th>
+                                <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(amb)"></i>
+                              </th>
                             </tr>
                         </tbody>
                     </div>
