@@ -1,8 +1,7 @@
 import {Component, Inject, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {GeneralService} from "../../services/general.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import { MDBModalRef } from 'angular-bootstrap-md';
-import {Subject} from "rxjs";
+
 
 
 @Component({
@@ -36,20 +35,16 @@ export class CreateModalComponent implements OnInit {
     public modalRef: MDBModalRef) { }
 
   ngOnInit() {
-    this.generalService.returnArrayAmbitos()
-    .subscribe(data => this.ambitos = data);
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-      limitSelection: 2
-    };
     this.languages =  this.generalService.returnLanguages();
-   // .subscribe(data => this.languages = data['languages']);
+    this.dropdownSettings = {
+        singleSelection:false,
+        idField: 'id',
+        tectField: 'text',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        itemsShowLimit: 3,
+        allowSearchFilter: true,
+      }
   }
   // ngOnChanges(changes:SimpleChanges){
   //   // this.formIsValid = this.checkValidityOfForm();
@@ -68,7 +63,7 @@ export class CreateModalComponent implements OnInit {
     }
   }
   filterAmbitos(arr:any):any{
-    let ambitosArr:any[];
+    let ambitosArr:any[] = [];
     for(let sel of arr)
     {
       for(let amb of this.ambitos ){
@@ -82,19 +77,25 @@ export class CreateModalComponent implements OnInit {
 
   onFormSubmit(addEtiquetaForm: any){
     let arr:any[] = [];
+    if (addEtiquetaForm.controls['pages'].value == null || addEtiquetaForm.controls['pages'].value.length < 1){
+      console.log("error");
+      this.modalRef.hide();
+    }
     for(let lang of this.languages){
       arr.push({available: true,
                created: (new Date).getTime(),
               keyId: addEtiquetaForm.controls['keyId'].value,
               id: addEtiquetaForm.controls['keyId'].value + "::" + lang,
-              docId: "Etiqueta::" + addEtiquetaForm.controls['keyId'].value + "::" + lang,
+              docId: "etiqueta::" + addEtiquetaForm.controls['keyId'].value + "::" + lang,
               content:addEtiquetaForm.controls['content'+lang].value,
-              modified: (new Date).getDate(),
+              language: lang,
+              modified: (new Date).getTime(),
               pages: this.filterAmbitos(addEtiquetaForm.controls['pages'].value),
+              type: "etiqueta",
             })
     }
     this.generalService.addTag(arr).subscribe(
-      result=> console.log("Houston we created this things: {}",result)
+      result=> console.log("Houston we created these things: {}",result)
     );
     this.modalRef.hide();
     }

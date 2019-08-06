@@ -12,38 +12,39 @@ import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
 export class SearchTagCategoryComponent implements OnInit {
   tags: any = [];
   termino: string[] = [];
-  ambitos: any = [];
-  dropdownSettings = {};
+  ambitos: any[] = [];
   ambitosMDE:MDE[] = [];
   ambitosSelecMDE:any = [];
   editingTag:any;
-  
+  dropdownSettings = {};
   modalRef: MDBModalRef;
 
-
+  filteredTags:any[] = [];
 
   constructor(public generalService: GeneralService,public mdbService: MDBModalService,) { }
     ngOnInit() {
-       this.generalService.returnArrayAmbitos()
-       .subscribe(data => this.ambitos = data);
+      this.generalService.returnArrayAmbitos().subscribe((d) => {
+        this.ambitos = d;
+        this.ambitosToMDE();
+      })
+
+
       // this.ambitos = this.generalService.getAmbitosTemp();
       this.dropdownSettings = {
-        singleSelection: false,
+        singleSelection:false,
         idField: 'id',
-        textField: 'text',
+        tectField: 'text',
         selectAllText: 'Select All',
         unSelectAllText: 'UnSelect All',
         itemsShowLimit: 3,
         allowSearchFilter: true,
-        limitSelection: 2
-      };
-      this.ambitosToMDE();
-    }    
+      }   
+    }
 
     searchTags(t: any[]) {
       //this.tags = this.generalService.getTagTemp();
       this.generalService.getTagsWithAmbitos(t)
-       .subscribe(data => this.tags = data);
+       .subscribe(data => {this.tags = data});
     }
 
     onEdit(tag:any){
@@ -52,7 +53,9 @@ export class SearchTagCategoryComponent implements OnInit {
     onDelete(tag:any){
     this.generalService.deleteTag(tag.keyId);
     }
+    
 
+    //HERE NEED TO CHANGE FOR USING DIFFERENT LANGUAGES
     onChangeState(tag:any,state:boolean){
     let tagarr:any[] = [];
     tagarr.push({
@@ -70,10 +73,10 @@ export class SearchTagCategoryComponent implements OnInit {
     this.generalService.editTag(tagarr);
     }
 
-    onSubmit(etiqueta:any){
+    onSubmit(){
       let sarr = [];
       for(let amb of this.ambitosSelecMDE){
-        sarr.push(this.ambitosSelecMDE['text']);
+        sarr.push(amb['text']);
       }
       this.searchTags(sarr);
     }
@@ -86,7 +89,29 @@ export class SearchTagCategoryComponent implements OnInit {
       }
     }
     createTag(){
-      this.modalRef = this.mdbService.show(CreateModalComponent);
+      this.modalRef = this.mdbService.show(CreateModalComponent, {
+        backdrop: true,
+        keyboard: true,
+        focus: true,
+        show: false,
+        ignoreBackdropClick: false,
+        class: '',
+        containerClass: '',
+        animated: true,
+        data: {
+          ambitos:this.ambitos,
+          ambitosMDE: this.ambitosMDE
+        }
+    });
+    }
+    ambitosDeEtiquetasHeaders(etiqueta:any):string{
+    let ambArr:string = "Ambitos: { ";
+    for(let ambito of etiqueta.pages){
+      ambArr += ambito.keyId + ",";
+    }
+    ambArr.substring(0,ambArr.length-2);
+    ambArr+=" }"
+    return ambArr;
     }
   }
   interface MDE {

@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import { MDBModalRef } from 'angular-bootstrap-md';
 

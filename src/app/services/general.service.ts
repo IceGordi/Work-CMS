@@ -59,9 +59,17 @@ export class GeneralService {
         catchError(this.handleError)
       );
   }
+
+  getTagsByLanguage(lang:String){
+    return this.http.get(this._url+"/etiqueta/all/"+lang,{headers: headers})
+    .pipe(
+        catchError(this.handleError)
+    );
+  }
+
   getTagsWithAmbitos(amb:any[]){
       // this.http.get(url, { params: Params });
-          return this.http.get(this._url+"/etiqueta/ambitos/${amb}",{headers: headers})
+          return this.http.get(this._url+"/etiqueta/ambitos/"+amb,{headers: headers})
               .pipe(
                   catchError(this.handleError)
               );
@@ -132,4 +140,3 @@ private handleError(error: HttpErrorResponse) {
       'Something bad happened; please try again later.');
   };
 }
-

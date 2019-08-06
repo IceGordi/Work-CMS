@@ -16,7 +16,7 @@
                 </div>
 
 
-                <div class="form-group material-disabled col-md-5">
+                <div class="form-group material-disabled col-md-5" *ngIf="ambitos!=null">
                     <label for="pages">Ambitos</label>
                     <ng-multiselect-dropdown class="select-dropdown" name="pages" ngModel [placeholder]="'Select:'" [data]="ambitosMDE" [settings]="dropdownSettings">
                     </ng-multiselect-dropdown>
