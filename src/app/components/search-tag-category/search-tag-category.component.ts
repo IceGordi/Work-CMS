@@ -105,13 +105,12 @@ export class SearchTagCategoryComponent implements OnInit {
     });
     }
     ambitosDeEtiquetasHeaders(etiqueta:any):string{
-    let ambArr:string = "Ambitos: { ";
+    let ambArr:string = "";
     for(let ambito of etiqueta.pages){
       ambArr += ambito.keyId + ",";
     }
-    ambArr.substring(0,ambArr.length-2);
-    ambArr+=" }"
-    return ambArr;
+   let str = ambArr.substring(0,ambArr.length-2);
+    return str;
     }
   }
   interface MDE {

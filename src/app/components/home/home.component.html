@@ -1,36 +1,33 @@
-<div class="d-sm-flex align-items-center justify-content-center mb-4">
-    <h1 class="h3 mb-4">Home</h1>
-</div>
-<div class="row">
+<div class="row my-2">
     <div class="col-md-6 col-xl-4">
-      <div class="card shadow mb-4 w-100">
-        <div class="card-header py-3 d-flex align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-secondary">Idiomas</h6>
-          <button class="btn btn-sm btn-outline-secondary">Nuevo idioma</button>
-        </div>
-        <div class = "container">
-          <div class="card-body">
-            <div class="table-responsive">
-              <div class="table table-striped">
-                <thead>
-                <tr>
-                  <th scope="col">Language</th>
-                  <th scope="col">Filler</th>
-                  <th scope="col">Filler2</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let lang of languages">
-                  <th scope="row">{{lang}}</th>
-                  <th scope="row">FillerContent</th>
-                  <th scope="row">FillerContent2</th>
-                </tr>
-                </tbody>
-              </div>
+        <div class="card shadow mb-4 w-100">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-secondary">Idiomas</h6>
+                <button class="btn btn-sm btn-outline-secondary">Nuevo idioma</button>
             </div>
-          </div>
+            <div class="container">
+                <div class="card-body">
+                    <div class="table-responsive w-100">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Language</th>
+                                    <th scope="col">Filler</th>
+                                    <th scope="col">Filler2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let lang of languages">
+                                    <th scope="row">{{lang}}</th>
+                                    <th scope="row">FillerContent</th>
+                                    <th scope="row">FillerContent2</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
     </div>
     <div class="col-md-6 col-xl-8">
         <div class="card shadow mb-4 w-100">
@@ -40,7 +37,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <div class="table table-striped">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">Ambito</th>
@@ -52,23 +49,23 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let amb of ambitos">
-                              <th scope="row">{{amb.keyId}}</th>
-                              <th scope="row">{{amb.content}}</th>
-                              <th scope="row">
-                                  <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
-                              </th>
-                              <th *ngIf="amb.available==true" scope="row">
-                                <i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(amb,false)"></i>
-                              </th>
-                              <th *ngIf="amb.available==false" scope="row">
-                                <i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(amb,true)"></i>
-                              </th>
-                              <th scope="row">
-                                <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(amb)"></i>
-                              </th>
+                                <th scope="row">{{amb.keyId}}</th>
+                                <th scope="row">{{amb.content}}</th>
+                                <th scope="row">
+                                    <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>
+                                </th>
+                                <th *ngIf="amb.available==true" scope="row">
+                                    <i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(amb,false)"></i>
+                                </th>
+                                <th *ngIf="amb.available==false" scope="row">
+                                    <i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(amb,true)"></i>
+                                </th>
+                                <th scope="row">
+                                    <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(amb)"></i>
+                                </th>
                             </tr>
                         </tbody>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>

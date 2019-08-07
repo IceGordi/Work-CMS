@@ -3,22 +3,23 @@ import { GeneralService } from 'src/app/services/general.service';
 import { CreateAmbitoComponent } from '../create-ambito/create-ambito.component';
 import { MDBModalService, MDBModalRef } from 'angular-bootstrap-md';
 import { ValidationService } from '../../services/validation.service';
-import { Subscription} from 'rxjs';
+import { Subscription, Subject} from 'rxjs';
 import { EditAmbitoComponent } from '../edit-ambito/edit-ambito.component';
 import {Router} from "@angular/router";
 import{Location} from "@angular/common";
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   url:String;
 
   languages:String[];
-
+  private unsubscribeAll:Subject<any>;
   ambitos:any[];
   modalRef: MDBModalRef;
   subscriptions:Subscription;
@@ -27,25 +28,28 @@ export class HomeComponent implements OnInit {
     public validator: ValidationService,
               public router: Router,
               public location:Location) {
-              this.generalService.returnArrayAmbitos()
-              .subscribe(data=> this.ambitos =data);
-              console.log(this.ambitos);
               this.url = this.location.path();
+              this.unsubscribeAll = new Subject<any>();
               }
 
   ngOnInit() {
-    this.generalService.refreshNeeded$.subscribe(() => {
-      this.generalService.returnArrayAmbitos()
-        .subscribe(data => this.ambitos = data);
-      console.log(this.ambitos);
-      //this.generalService.returnLanguages().subscribe(data => this.languages = data);
+    this.generalService._refreshNeeded$.pipe(
+      takeUntil(this.unsubscribeAll)
+    )
+    .subscribe((data) => {
+      this.getAmbitos();
+      console.log(data);
       this.languages = this.generalService.returnLanguages();
     });
-    this.generalService.returnArrayAmbitos()
-      .subscribe(data => this.ambitos = data);
-    console.log(this.ambitos);
-    this.languages = this.generalService.returnLanguages();
   }
+
+  getAmbitos():void{
+    this.generalService.returnArrayAmbitos()
+    .pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(data => this.ambitos = data);
+  }
+
   onCreateAmbito(){
     this.modalRef = this.mdbService.show(CreateAmbitoComponent, {
       backdrop: true,
@@ -86,19 +90,39 @@ export class HomeComponent implements OnInit {
      available:state,
      type:amb.type,
    });
-    this.generalService.editAmbito(ambito).subscribe(
+    this.generalService.editAmbito(ambito).pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(
       result=> console.log("Houston we changed the state of the following:",result)
     )
   }
 
   onDelete(amb:any){
-    this.generalService.deleteAmbito(amb.keyId)
-      .subscribe(
-        () => console.log("Permanently deleted item: {}", amb.toString())
+    let tags:any;
+    let ambitos:any;
+    let arr:any[];
+    this.generalService.getTagsWithAmbitos(amb.keyId).pipe(
+      takeUntil(this.unsubscribeAll)
+    )
+    .subscribe(data => {tags = data;});
+    for(let i = 0; i<tags.length; i++){
+      for(let j=0;i<tags[i].pages.length;j++){
+        if(tags[i].pages[j].keyId == amb.keyId){
+          tags[i].pages.splice(j,1);
+        }
+      }
+    }
+    this.generalService.editTag(tags).pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(() => console.log("removed {} from all etiquetas that contained it", amb));
+    this.generalService.deleteAmbito(amb.keyId).pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(
+        () => console.log("Permanently deleted item: {}", amb)
       );
   }
-  // ngOnDestroy(){
-  //     this.subscriptions.unsubscribe();
-  //   }
+   ngOnDestroy(){
+       this.unsubscribeAll.unsubscribe();
+     }
   }
 
