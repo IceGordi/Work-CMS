@@ -1,0 +1,54 @@
+<div class="d-sm-flex align-items-center justify-content-center mb-4">
+<div class="col-6">
+  <select [(ngModel)]="valueLANG">
+    <option *ngFor="let lang of langStrings" [value]="lang">{{lang}}</option>
+  </select>
+
+</div>
+<!--    <ng-select [allowClear]="true"-->
+<!--             [items]="langStrings"-->
+<!--             [disabled]="false"-->
+<!--             (data)="refreshValueLANG($event)"-->
+<!--             placeholder="lang:">-->
+<!--  </ng-select>-->
+
+<!--  <ng-select *ngIf=""-->
+<!--    [items]="faqsStrings"-->
+<!--             [disabled]="false"-->
+<!--             (data)="refreshValueFAQ($event)"-->
+<!--             placeholder="Select FAQ:">-->
+<!--  </ng-select>-->
+  <button type="button" class="btn btn-light mx-2" (click)="onSubmit()">Submit</button>
+</div>
+<div class="col-md-6 col-xl-12">
+  <div class="card shadow w-100">
+    <div class="card-header py-3 d-flex align-items-center justify-content-between">
+      <h6 class="m-0 font-weight-bold text-secondary">FAQ: {{faqSeleccionado.keyId}}</h6>
+    <i class="fa fa-plus fa-2x" aria-hidden="true" (click)="addQuestion(faqSeleccionado)"></i>
+<!--      <i class="fa fa-edit fa-2x" aria-hidden="true" (click)="onEdit(faqSeleccionado)"></i>-->
+<!--      <span *ngIf="faqSeleccionado.available == true"><i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(faqSeleccionado,false)"></i></span>-->
+<!--      <span *ngIf="faqSeleccionado.available == false"><i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(faqSeleccionado,true)"></i></span>-->
+<!--      <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(faqSeleccionado)"></i>-->
+      <button class="btn btn-sm btn-outline-secondary" (click)="createFAQ()">Nueva FAQ</button>
+    </div>
+    <div class="card-body">
+      <div class="card-deck">
+        <div class="col-4 my-3" *ngFor="let qa of faqSeleccionado.questionsAnswers">
+          <div class="card text-center" id="faqCard">
+            <div class="card-body">
+              <h5 class="card-title">{{qa.question}}</h5>
+              <br>
+              <p class="card-text">{{qa.answer}}</p>
+            </div>
+            <div class="card-footer text-muted">
+              <i class="fa fa-edit fa-2x" aria-hidden="true" (click)="onEdit(qa)"></i>
+              <span *ngIf="qa.available == true"><i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(qa,false)"></i></span>
+              <span *ngIf="qa.available == false"><i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(qa,true)"></i></span>
+              <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(qa)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

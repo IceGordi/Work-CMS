@@ -16,19 +16,14 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  url:String;
 
   languages:String[];
   private unsubscribeAll:Subject<any>;
   ambitos:any[];
   modalRef: MDBModalRef;
-  subscriptions:Subscription;
   constructor(public generalService:GeneralService,
     public mdbService: MDBModalService,
-    public validator: ValidationService,
-              public router: Router,
-              public location:Location) {
-              this.url = this.location.path();
+    public validator: ValidationService) {
               this.unsubscribeAll = new Subject<any>();
               }
 
@@ -38,7 +33,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     )
     .subscribe((data) => {
       this.getAmbitos();
-      console.log(data);
       this.languages = this.generalService.returnLanguages();
     });
   }
@@ -105,6 +99,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribeAll)
     )
     .subscribe(data => {tags = data;});
+
+    this.generalService.deleteAmbito(amb.keyId).pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(
+      () => console.log("Permanently deleted item: {}", amb)
+    );
+    if(tags == null) return;
     for(let i = 0; i<tags.length; i++){
       for(let j=0;i<tags[i].pages.length;j++){
         if(tags[i].pages[j].keyId == amb.keyId){
@@ -115,11 +116,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.generalService.editTag(tags).pipe(
       takeUntil(this.unsubscribeAll)
     ).subscribe(() => console.log("removed {} from all etiquetas that contained it", amb));
-    this.generalService.deleteAmbito(amb.keyId).pipe(
-      takeUntil(this.unsubscribeAll)
-    ).subscribe(
-        () => console.log("Permanently deleted item: {}", amb)
-      );
+
   }
    ngOnDestroy(){
        this.unsubscribeAll.unsubscribe();

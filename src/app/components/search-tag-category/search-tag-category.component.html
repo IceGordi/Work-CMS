@@ -1,86 +1,17 @@
-<!--<div class="searchContainer">-->
-<!--    <ng-multiselect-dropdown class="select-dropdown" [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">-->
-<!--    </ng-multiselect-dropdown>-->
-<!--    <button type="button" class="btn btn-light" (click)="onSubmit()">Submit</button>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; <h4>Search:</h4>-->
-<!--<input [(ngModel)]="termino" (keyup.enter)="searchTags(termino)"> &ndash;&gt;-->
-
-<!--<div class="container">-->
-<!--    <table class="table table-striped">-->
-<!--        <thead>-->
-<!--            <tr>-->
-<!--                <th scope="col">#</th>-->
-<!--                <th scope="col">Id</th>-->
-<!--                <th scope="col">Content</th>-->
-<!--                <th scope="col">Edit</th>-->
-<!--                <th scope="col">Delete</th>-->
-<!--            </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--            <tr *ngFor="let tag of tags; let i = index">-->
-<!--                <th scope="row">{{i+1}}</th>-->
-<!--                <td>{{ tag["id"] }}</td>-->
-<!--                <td>{{ tag["content"] }}</td>-->
-<!--                <td>-->
-<!--                    <fa name="edit" size="2x" (click)="onEdit(tag)"></fa>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <fa name="trash-alt" size="2x" (click)="onDelete(tag)"></fa>-->
-<!--                </td>-->
-<!--                &lt;!&ndash; Rellenar luego anadiendo contenido&ndash;&gt;-->
-<!--            </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--    <button type="button" (click)="createTag()" class="btn btn-light">Create Tag</button>-->
-<!--</div>-->
-
 <div class="d-sm-flex align-items-center justify-content-center mb-4" *ngIf="ambitosMDE.length!=0">
     <ng-multiselect-dropdown class="select-dropdown w-50" [placeholder]="'Select:'" [data]="ambitosMDE" [(ngModel)]="ambitosSelecMDE" [settings]="dropdownSettings">
     </ng-multiselect-dropdown>
     <button type="button" class="btn btn-light mx-2" (click)="onSubmit()">Submit</button>
 </div>
 <div class="col-md-6 col-xl-12">
-    <div class="card shadow mb-4 w-100">
+    <div class="card shadow w-100">
         <div class="card-header py-3 d-flex align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-secondary">Etiquetas</h6>
             <button class="btn btn-sm btn-outline-secondary" (click)="createTag()">Nueva etiqueta</button>
         </div>
         <div class="card-body">
-            <!--        <div class="table-responsive">-->
-            <!--          <div class="table table-striped">-->
-            <!--            <thead>-->
-            <!--            <tr>-->
-            <!--              <th scope="col">Ambito</th>-->
-            <!--              <th scope="col">Contenido</th>-->
-            <!--              <th scope="col"> </th>-->
-            <!--              <th scope="col"> </th>-->
-            <!--              <th scope="col"> </th>-->
-            <!--            </tr>-->
-            <!--            </thead>-->
-            <!--            <tbody>-->
-            <!--            <tr *ngFor="let amb of ambitos">-->
-            <!--              <th scope="row">{{amb.keyId}}</th>-->
-            <!--              <th scope="row">{{amb.content}}</th>-->
-            <!--              <th scope="row">-->
-            <!--                <fa name="edit" size="2x" (click)="onEdit(amb)"></fa>-->
-            <!--              </th>-->
-            <!--              <th *ngIf="amb.available==true" scope="row">-->
-            <!--                <i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(amb,false)"></i>-->
-            <!--              </th>-->
-            <!--              <th *ngIf="amb.available==false" scope="row">-->
-            <!--                <i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(amb,true)"></i>-->
-            <!--              </th>-->
-            <!--              <th scope="row">-->
-            <!--                <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(amb)"></i>-->
-            <!--              </th>-->
-            <!--            </tr>-->
-            <!--            </tbody>-->
-            <!--          </div>-->
-            <!--        </div>-->
             <div class="card-deck">
-                <div class="col-4" *ngFor="let etiqueta of tags">
+                <div class="col-4 my-3" *ngFor="let etiqueta of tags">
                     <div class="card text-center" id="etiquetaCard">
                         <div class="card-header">
                             {{ambitosDeEtiquetasHeaders(etiqueta)}}
@@ -92,8 +23,8 @@
                         </div>
                         <div class="card-footer text-muted">
                             <i class="fa fa-edit fa-2x" aria-hidden="true" (click)="onEdit(etiqueta)"></i>
-                            <span *ngIf="etiqueta.available == true"><i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(false)"></i></span>
-                            <span *ngIf="etiqueta.available == false"><i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(true)"></i></span>
+                            <span *ngIf="etiqueta.available == true"><i class="fa fa-eye-slash fa-2x" aria-hidden="true" (click)="onChangeState(etiqueta,false)"></i></span>
+                            <span *ngIf="etiqueta.available == false"><i class="fa fa-eye fa-2x" aria-hidden="true" (click)="onChangeState(etiqueta,true)"></i></span>
                             <i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(etiqueta)"></i>
                         </div>
                     </div>
@@ -103,8 +34,3 @@
     </div>
 </div>
 
-<!-- <div class="row emorow my-1"> <i class="fa fa-edit fa-2x" aria-hidden="true"></i></div>
-<div class="row emorow my-1"> <i class="fa fa-eye-slash fa-2x" aria-hidden="true"></i></div> -->
-<!--                    <i class="fa fa-eye fa-3x" aria-hidden="true" (click)="onChangeState(etiqueta,true)"></i>-->
-<!-- <div class="row emorow my-1"><i class="fa fa-trash fa-2x" aria-hidden="true" (click)="onDelete(etiqueta)"></i></div>
-{{ambitosDeEtiquetasHeaders(etiqueta)}} -->

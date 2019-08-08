@@ -18,7 +18,9 @@ import { CreateAmbitoComponent } from './components/create-ambito/create-ambito.
 import {MDBBootstrapModule} from 'angular-bootstrap-md';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EditAmbitoComponent } from './components/edit-ambito/edit-ambito.component';
-
+import { FAQComponent } from './components/faq/faq.component';
+import {SelectModule} from 'ng2-select';
+import { FaqCreateComponent } from './components/faq-create/faq-create.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +32,8 @@ import { EditAmbitoComponent } from './components/edit-ambito/edit-ambito.compon
     CreateModalComponent,
     CreateAmbitoComponent,
     EditAmbitoComponent,
+    FAQComponent,
+    FaqCreateComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,9 +46,10 @@ import { EditAmbitoComponent } from './components/edit-ambito/edit-ambito.compon
     ReactiveFormsModule,
     MDBBootstrapModule.forRoot(),
     NgbModule,
+    SelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ CreateAmbitoComponent, CreateModalComponent, EditAmbitoComponent ]
+  entryComponents: [ CreateAmbitoComponent, CreateModalComponent, EditAmbitoComponent, EditModalComponent,FaqCreateComponent ]
 })
 export class AppModule { }

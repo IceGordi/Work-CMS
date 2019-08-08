@@ -10,9 +10,9 @@ import { MDBModalRef } from 'angular-bootstrap-md';
   styleUrls: ['./create-modal.component.css']
 })
 export class CreateModalComponent implements OnInit {
-  
-  
-  
+
+
+
   ambitos: any[] = [];
   dropdownSettings = {};
   ambitosMDE:MDE[] = [];
@@ -26,7 +26,7 @@ export class CreateModalComponent implements OnInit {
   available:boolean = true;
 
   contents:String[];
-  
+
   languages:String[];
 
 
@@ -39,7 +39,7 @@ export class CreateModalComponent implements OnInit {
     this.dropdownSettings = {
         singleSelection:false,
         idField: 'id',
-        tectField: 'text',
+        textField: 'text',
         selectAllText: 'Select All',
         unSelectAllText: 'UnSelect All',
         itemsShowLimit: 3,
@@ -55,13 +55,6 @@ export class CreateModalComponent implements OnInit {
   //  return this.validatorServiceService.validateForm();
   // }
 
-  ambitosToMDE(){
-    let i=0;
-    for(let amb of this.ambitos){
-      this.ambitosMDE.push({id: i, text: amb['keyId']});
-      i++;
-    }
-  }
   filterAmbitos(arr:any):any{
     let ambitosArr:any[] = [];
     for(let sel of arr)
@@ -73,7 +66,7 @@ export class CreateModalComponent implements OnInit {
     }
     return ambitosArr;
   }
-  
+
 
   onFormSubmit(addEtiquetaForm: any){
     let arr:any[] = [];

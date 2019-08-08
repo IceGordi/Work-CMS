@@ -18,14 +18,20 @@ export class GeneralService {
 
   public _refreshNeeded$ = new BehaviorSubject<boolean>(true);
   private _url = "http://localhost:8080";
-    
+
     languages:String[] = ["es","en","de"];
 
     // tslint:disable-next-line: max-line-length
 
 
   constructor(private http: HttpClient, private validator:ValidationService) {}
- 
+
+  getEtiquetasByKeyId(keyId:String):any{
+    return this.http.get(this._url+"/etiqueta/"+keyId,{headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   returnArrayAmbitos(): any{
        return this.http.get(this._url+"/ambito/all",{headers: headers})
@@ -55,7 +61,7 @@ export class GeneralService {
               );
       }
   deleteTag(id:String){
-      return this.http.delete(this._url+"/delete/etiqueta/${id}" , {headers: headers})
+      return this.http.delete(this._url+"/delete/etiqueta/"+id , {headers: headers})
       .pipe(
         tap(() => {this._refreshNeeded$.next(true);}),
         catchError(this.handleError)
@@ -104,7 +110,54 @@ export class GeneralService {
     //   catchError(this.handleError)
     // );
   }
+  addFAQ(faq:any): any{
+    return this.http.post(this._url+"/create/faq",faq,{headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next(true);}),
+        catchError(this.handleError)
+      );
+  }
+  getFAQByKeyId(keyId:String[]){
+    return this.http.get(this._url+"/faq/keyId/"+keyId,{headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  editFAQ(faq:any) {
+    return this.http.post(this._url+"/update/faq",faq, {headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next(true);}),
+        catchError(this.handleError)
+      );
+  }
+  deleteFAQ(keyId:String){
+    return this.http.delete(this._url+"/delete/faq" +keyId, {headers: headers})
+      .pipe(
+        tap(() => {this._refreshNeeded$.next(true);
+          this._refreshNeeded$.complete()}),
+        catchError(this.handleError)
+      );
+  }
 
+  getAllFAQS(): any{
+    return this.http.get(this._url+"/faq/all",{headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+  getAllFAQSByLang(lang:String): any{
+    return this.http.get(this._url+"/faq/all/"+lang,{headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getFAQById(id:String){
+    return this.http.get(this._url+"/faq/id/"+id,{headers: headers})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
